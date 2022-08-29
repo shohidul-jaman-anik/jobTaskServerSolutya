@@ -28,6 +28,14 @@ async function run() {
             res.send(result)
         })
 
+        // Get A Single User Data
+        app.get('/allUser/:id', async (req, res) => {
+            const id = req.params.id;
+            const filter = { id: ObjectId(id)}
+            const result = await userCollection.findOne(filter)
+            res.send(result)
+        })
+
         // Post Data
         app.post('/addUser', async (req, res) => {
             const data = req.body
@@ -43,6 +51,21 @@ async function run() {
             res.send(result)
         })
 
+
+        // update user
+        app.put('/user/:id', async (req, res) => {
+            const id = req.params.id
+            console.log(id)
+            const data = req.body
+            console.log(data)
+            const query = { _id: ObjectId(id) }
+            const upsert = { upsert: true }
+            const updateDoc = {
+                $set: data
+            }
+            const result = await userCollection.updateOne(query, updateDoc, upsert)
+            res.send(result)
+        })
 
     }
 
